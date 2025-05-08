@@ -1,0 +1,52 @@
+1 :Find-S Algorithm Implementation
+
+ Training data: [Outlook, Temperature, Humidity, Wind, PlayTennis]
+dataset = [
+    ['Sunny', 'Warm', 'Normal', 'Strong', 'Yes'],
+    ['Sunny', 'Warm', 'High', 'Strong', 'Yes'],
+    ['Rainy', 'Cold', 'High', 'Strong', 'No'],
+    ['Sunny', 'Warm', 'High', 'Weak', 'Yes']
+]
+
+ Step 1: Initialize the hypothesis
+hypothesis = ['ϕ'] * (len(dataset[0]) - 1)
+
+ Step 2: Find-S algorithm
+for sample in dataset:
+    if sample[-1] == 'Yes':  # Only positive examples
+        for i in range(len(hypothesis)):
+            if hypothesis[i] == 'ϕ':
+                hypothesis[i] = sample[i]
+            elif hypothesis[i] != sample[i]:
+                hypothesis[i] = '?'
+
+ Step 3: Output
+print("Final Specific Hypothesis:", hypothesis)
+ Code:
+def find_s_algorithm(dataset):
+    # Initialize hypothesis to the first positive example
+    for example in dataset:
+        if example[-1] == 'Yes':
+            hypothesis = example[:-1]
+            break
+
+    # Loop through the rest of the dataset
+    for example in dataset:
+        if example[-1] == 'Yes':  # Only consider positive examples
+            for i in range(len(hypothesis)):
+                if hypothesis[i] != example[i]:
+                    hypothesis[i] = '?'  # Generalize differing attributes
+
+    return hypothesis
+
+# Training dataset
+dataset = [
+    ['Sunny', 'Warm', 'Normal', 'Strong', 'Yes'],
+    ['Sunny', 'Warm', 'High', 'Strong', 'Yes'],
+    ['Rainy', 'Cold', 'High', 'Strong', 'No'],
+    ['Sunny', 'Warm', 'High', 'Weak', 'Yes']
+]
+
+# Run Find-S algorithm
+final_hypothesis = find_s_algorithm(dataset)
+print("Final Hypothesis:", final_hypothesis)
